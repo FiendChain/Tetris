@@ -5,7 +5,7 @@
 
 static std::shared_ptr<sf::RectangleShape> CreateGenericBlock(unsigned int size, const sf::Color& colour)
 {
-	std::shared_ptr<sf::RectangleShape> block = std::make_shared<sf::RectangleShape>(sf::Vector2f(size, size));
+    std::shared_ptr<sf::RectangleShape> block = std::make_shared<sf::RectangleShape>(sf::Vector2f(size, size));
     block->setFillColor(colour);
     block->setOutlineColor(sf::Color::Black);
     block->setOutlineThickness(1.0f);

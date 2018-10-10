@@ -11,7 +11,7 @@ BlockGrid::BlockGrid(unsigned int totalColumns, unsigned int totalRows, unsigned
     }
 }
 
-void BlockGrid::Draw(sf::RenderWindow& window) const
+void BlockGrid::Draw(sf::RenderTarget* target) const
 {
     for (unsigned int row = 0; row < m_TotalRows; row++)
     {
@@ -20,7 +20,7 @@ void BlockGrid::Draw(sf::RenderWindow& window) const
             auto block = m_Blocks[row][col];
             if (block) 
             {
-                window.draw(*block.get());
+                target->draw(*block.get());
             }
         }
     }

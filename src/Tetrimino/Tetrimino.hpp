@@ -15,11 +15,13 @@ class Tetrimino
         unsigned int m_Size;
     public:
         Tetrimino(int posX, int posY, unsigned int size);
-        void RotateClockwise(BlockGrid& tetriminos);
-        void RotateAntiClockwise(BlockGrid& tetriminos);
-        void Move(BlockGrid& tetriminos, Direction direction);
+        virtual bool RotateClockwise(BlockGrid& tetriminos, int xOffset=0, int yOffset=0);
+        virtual bool RotateAntiClockwise(BlockGrid& tetriminos, int xOffset=0, int yOffset=0);
+        virtual bool Move(BlockGrid& tetriminos, Direction direction, unsigned int distance=1);
         virtual TetriminoLayout& GetLayout() = 0;
-        void Draw(sf::RenderWindow& window);
+        void SetPosition(int posX, int posY);
+        void SetSize(unsigned int size);
+        void Draw(sf::RenderTarget* target);
         void Place(BlockGrid& blocks);
     private:
         bool CheckCollision(BlockGrid& blocks, TetriminoLayout& layout, int xOffset, int yOffset) const;

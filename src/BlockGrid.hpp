@@ -16,7 +16,7 @@ class BlockGrid
         }
         inline unsigned int GetTotalColumns() const { return m_TotalColumns; }
         inline unsigned int GetTotalRows() const { return m_TotalRows; }
-        void Draw(sf::RenderWindow& window) const;
+        void Draw(sf::RenderTarget* target) const;
         void CheckLineClear();
     private:
         void UpdateBlockLocations();

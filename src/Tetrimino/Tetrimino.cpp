@@ -5,10 +5,10 @@ Tetrimino::Tetrimino(int posX, int posY, unsigned int size)
     : m_PosX(posX), m_PosY(posY),
       m_Size(size)
 {
-    // UpdateLayoutLocation();
+    
 }
 
-void Tetrimino::RotateClockwise(BlockGrid& blocks)
+bool Tetrimino::RotateClockwise(BlockGrid& blocks, int xOffset, int yOffset)
 {
     auto& layout = GetLayout();
     TetriminoLayout tmpLayout = {};
@@ -33,14 +33,17 @@ void Tetrimino::RotateClockwise(BlockGrid& blocks)
         if (rowExists)
             tmpLayout.push_back(tmpRow);
     }
-    if (!CheckCollision(blocks, tmpLayout, 0, 0))
+    if (!CheckCollision(blocks, tmpLayout, xOffset, yOffset))
     {
         layout = tmpLayout;
-        UpdateLayoutLocation();
+        m_PosX += xOffset;
+        m_PosY += yOffset;
+        return true;
     }
+    return false;
 }
 
-void Tetrimino::RotateAntiClockwise(BlockGrid& blocks)
+bool Tetrimino::RotateAntiClockwise(BlockGrid& blocks, int xOffset, int yOffset)
 {
     auto& layout = GetLayout();
     TetriminoLayout tmpLayout = {};
@@ -65,51 +68,56 @@ void Tetrimino::RotateAntiClockwise(BlockGrid& blocks)
         if (rowExists)
             tmpLayout.push_back(tmpRow);
     }
-    if (!CheckCollision(blocks, tmpLayout, 0, 0))
+    if (!CheckCollision(blocks, tmpLayout, xOffset, yOffset))
     {
         layout = tmpLayout;
-        UpdateLayoutLocation();
+        m_PosX += xOffset;
+        m_PosY += yOffset;
+        return true;
     }
+    return false;
+        
 }
 
-void Tetrimino::Move(BlockGrid& blocks, Direction direction)
+bool Tetrimino::Move(BlockGrid& blocks, Direction direction, unsigned int distance)
 {
     switch (direction)
     {
     case Direction::Right:
-        if (!CheckCollision(blocks, GetLayout(), 1, 0))
+        if (!CheckCollision(blocks, GetLayout(), distance, 0))
         {
-            m_PosX += 1;
-            UpdateLayoutLocation();
+            m_PosX += distance;
+            return true;
         }
         break;
     case Direction::Left:
-        if (!CheckCollision(blocks, GetLayout(), -1, 0))
+        if (!CheckCollision(blocks, GetLayout(), -distance, 0))
         {
-            m_PosX -= 1;
-            UpdateLayoutLocation();
+            m_PosX -= distance;
+            return true;
         }
         break;
     case Direction::Down:
-        if (!CheckCollision(blocks, GetLayout(), 0, 1))
+        if (!CheckCollision(blocks, GetLayout(), 0, distance))
         {
-            m_PosY += 1;
-            UpdateLayoutLocation();
+            m_PosY += distance;
+            return true;
         }
         break;
     }
-
+    return false;
 }
 
-void Tetrimino::Draw(sf::RenderWindow& window)
+void Tetrimino::Draw(sf::RenderTarget* target)
 {
+    UpdateLayoutLocation();
     for (auto& row: GetLayout())
     {
         for (auto& block: row)
         {
             if (block)
             {
-                window.draw(*block);
+                target->draw(*block);
             }
         }
     }
@@ -122,8 +130,26 @@ void Tetrimino::Place(BlockGrid& blocks)
     while (!CheckCollision(blocks, GetLayout(), 0, yOffset))
         yOffset += 1;
     m_PosY += yOffset-1;
-    UpdateLayoutLocation();
+    UpdateLayoutLocation(); // when placing into block grid, update location
     WriteToGrid(blocks);
+}
+
+void Tetrimino::SetPosition(int posX, int posY)
+{
+    m_PosX = posX;
+    m_PosY = posY;
+}
+
+void Tetrimino::SetSize(unsigned int size)
+{
+    m_Size = size;
+    for (auto& row: GetLayout())
+    {
+        for (auto& block: row)
+        {
+            if (block) block->setSize(sf::Vector2f(size, size));
+        }
+    }
 }
 
 void Tetrimino::UpdateLayoutLocation()
