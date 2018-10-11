@@ -20,7 +20,9 @@ class Tetrimino
         virtual bool Move(BlockGrid& tetriminos, Direction direction, unsigned int distance=1);
         virtual TetriminoLayout& GetLayout() = 0;
         void SetPosition(int posX, int posY);
+        inline sf::Vector2u GetPosition() const { return sf::Vector2u(m_PosX, m_PosY); }
         void SetSize(unsigned int size);
+        inline unsigned int GetSize() const { return m_Size; }
         void Draw(sf::RenderTarget* target);
         void Place(BlockGrid& blocks);
     private:

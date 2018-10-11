@@ -11,6 +11,9 @@ set(SFML_DIR ${CMAKE_SOURCE_DIR}/SFML-2.5.0)
 set(SRC_FILES 
     ${SRC_FILES_DIR}/main.cpp
     ${SRC_FILES_DIR}/App.cpp
+    ${SRC_FILES_DIR}/AppInput.cpp
+    ${SRC_FILES_DIR}/AppRender.cpp
+    ${SRC_FILES_DIR}/AppUpdate.cpp
     ${SRC_FILES_DIR}/BlockGrid.cpp
     ${SRC_FILES_DIR}/Tetrimino/Tetrimino.cpp
     ${SRC_FILES_DIR}/Tetrimino/StandardBlocks.cpp)
