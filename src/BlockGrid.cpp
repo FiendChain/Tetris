@@ -11,6 +11,17 @@ BlockGrid::BlockGrid(unsigned int totalColumns, unsigned int totalRows, unsigned
     }
 }
 
+void BlockGrid::Reset()
+{
+    for (auto& row: m_Blocks)
+    {
+        for (auto& block: row)
+        {
+            if (block) block = nullptr;
+        }
+    }
+}
+
 void BlockGrid::Draw(sf::RenderTarget* target) const
 {
     for (unsigned int row = 0; row < m_TotalRows; row++)
@@ -26,9 +37,9 @@ void BlockGrid::Draw(sf::RenderTarget* target) const
     }
 }
 
-void BlockGrid::CheckLineClear()
+unsigned int BlockGrid::CheckLineClear()
 {
-    int rowsRemoved = 0;
+    unsigned int rowsRemoved = 0;
     for (int row = 0; row < m_TotalRows-rowsRemoved; row++)
     {
         bool isRowFull = true;
@@ -52,6 +63,7 @@ void BlockGrid::CheckLineClear()
         m_Blocks.insert(m_Blocks.begin(), std::vector<std::shared_ptr<sf::RectangleShape>>(m_TotalColumns));
     }
     UpdateBlockLocations();   
+    return rowsRemoved;
 }
 
 void BlockGrid::UpdateBlockLocations()
